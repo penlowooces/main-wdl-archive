@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>足球胜平负 · 信息卡片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f6f3ed;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #2e2b28;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .page {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fdfcf9;
+            border-radius: 28px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+            padding: 2.5rem 2rem 3rem;
+            transition: box-shadow 0.2s ease;
+        }
+
+        @media (max-width: 540px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            .page {
+                padding: 1.8rem 1.2rem 2.2rem;
+                border-radius: 20px;
+            }
+        }
+
+        /* 主视觉 — 名片式标题区 */
+        .hero {
+            margin-bottom: 2.4rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 2px solid #eae5dd;
+        }
+
+        .hero h1 {
+            font-size: 2.1rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #1f1c19;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .sub {
+            color: #6b6259;
+            font-size: 1rem;
+            font-weight: 400;
+            border-left: 4px solid #c4b7a8;
+            padding-left: 1rem;
+            margin-top: 0.4rem;
+            line-height: 1.5;
+        }
+
+        /* 文章排版主体 */
+        .content p {
+            margin-bottom: 1.15rem;
+            font-size: 1rem;
+        }
+
+        .content a {
+            color: #2b4c3b;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+            text-decoration-color: #b8aa9a;
+            transition: color 0.2s, text-decoration-color 0.2s;
+        }
+
+        .content a:hover {
+            color: #1b3428;
+            text-decoration-color: #1b3428;
+        }
+
+        /* 卡片网格 — 信息卡片式 */
+        .card-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 2.2rem 0 2rem;
+        }
+
+        .card {
+            background: #f8f5f0;
+            border-radius: 20px;
+            padding: 1.5rem 1.6rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e8e2d9;
+            transition: background 0.15s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            background: #f6f1ea;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+            color: #2c2722;
+            letter-spacing: 0.01em;
+        }
+
+        .card h3 .emoji-marker {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #3f3a34;
+            margin-bottom: 0.2rem;
+            line-height: 1.55;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0;
+        }
+
+        .card ul li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.93rem;
+            color: #4a443d;
+        }
+
+        .card ul li::before {
+            content: "·";
+            position: absolute;
+            left: 0.2rem;
+            color: #8c8072;
+            font-weight: bold;
+        }
+
+        /* 引用块 / 提示框 */
+        .insight-box {
+            background: #f1ece6;
+            border-left: 5px solid #9b8c7b;
+            border-radius: 0 12px 12px 0;
+            padding: 1.2rem 1.4rem;
+            margin: 2rem 0 1.8rem;
+            font-size: 0.96rem;
+            color: #35302a;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .insight-box strong {
+            font-weight: 600;
+            color: #1e1a16;
+        }
+
+        .insight-box a {
+            color: #2b4c3b;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        /* 适合人群 — 两列布局 */
+        .audience-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.8rem 0 1.2rem;
+        }
+
+        .audience-item {
+            flex: 1 1 180px;
+            background: #f9f6f1;
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            border: 1px solid #e4ddd3;
+        }
+
+        .audience-item h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2f2a24;
+            margin-bottom: 0.3rem;
+        }
+
+        .audience-item p {
+            font-size: 0.9rem;
+            color: #524b43;
+        }
+
+        /* 自然链接段落 + FAQ 摘要 */
+        .faq-taste {
+            margin-top: 2rem;
+            padding-top: 1.2rem;
+            border-top: 1px dashed #d9d0c5;
+        }
+
+        .faq-taste details {
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid #ece6dd;
+            padding-bottom: 0.6rem;
+        }
+
+        .faq-taste summary {
+            font-weight: 500;
+            cursor: pointer;
+            color: #2b2722;
+            padding: 0.3rem 0;
+            font-size: 0.98rem;
+        }
+
+        .faq-taste summary::-webkit-details-marker {
+            color: #8c7f6f;
+        }
+
+        .faq-taste details p {
+            margin: 0.5rem 0 0.3rem;
+            padding-left: 0.3rem;
+            font-size: 0.93rem;
+            color: #4f4841;
+        }
+
+        .footer-note {
+            margin-top: 2.5rem;
+            font-size: 0.85rem;
+            color: #7d7369;
+            text-align: center;
+            border-top: 1px solid #e6dfd6;
+            padding-top: 1.5rem;
+        }
+
+        /* 点缀 */
+        .line-deco {
+            display: inline-block;
+            width: 32px;
+            height: 2px;
+            background: #c9beb0;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- 主视觉 -->
+    <div class="hero">
+        <h1>足球胜平负 · 一场比赛的三种表情</h1>
+        <div class="sub">
+            <span class="line-deco"></span> 从看热闹到看门道，你需要的不只是运气
+        </div>
+    </div>
+
+    <!-- 正文内容（信息卡片式展开） -->
+    <div class="content">
+
+        <p>每周末打开直播，屏幕里二十二个人追着一颗球跑。九十分钟结束，记分牌上只有三个结果：主队赢、客队赢、或者谁也没占到便宜。这就是足球世界里最基础也最迷人的三分法——<a href="https://main-wdl.com">足球胜平负</a>。可真正吸引人的，从来不只是那三个字背后的概率，而是它们如何把一场混沌的比赛，梳理成可以理解、可以讨论、甚至可以预判的叙事。</p>
+
+        <p>有人习惯在开场前扫一眼历史交手记录，有人更相信近期状态和伤病名单。无论哪种习惯，本质上都是在寻找一种「可能性」的线索。而这三个简洁的结果，恰好给了每个人一个平等的分析入口。</p>
+    </div>
+
+    <!-- 用途卡片 -->
+    <div class="card-grid">
+        <div class="card">
+            <h3><span class="emoji-marker">📋</span> 用途卡片 · 脉络梳理</h3>
+            <p>胜平负不只是赛后的结论，更是赛前、赛中的参照坐标。你可以用它来：</p>
+            <ul>
+                <li>快速定位一场比赛的核心悬念</li>
+                <li>对比两队在不同主客场的表现倾向</li>
+                <li>结合积分榜形势，判断各方的真实战意</li>
+                <li>作为和朋友聊球时的共同语言——平局也值得一场深度讨论</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3><span class="emoji-marker">🧭</span> 场景卡片 · 什么时候最需要它</h3>
+            <p>不只是赛前研究。赛后复盘时，胜平负的分布能直观反映一支球队的「性格」：有的队主场像猛虎，客场却判若两队；有的队擅长僵持，总在最后十分钟改写结果。这些模式，都会在累积的数据里慢慢浮现。</p>
+        </div>
+    </div>
+
+    <!-- 引用块 / 提示框 -->
+    <div class="insight-box">
+        <strong>📌 一点观察</strong><br>
+        很多时候人们把胜平负当成一个终点，其实它更像一个起点。当你知道一场比赛最终落在哪个格子里，回头再看那些转折、红牌、争议判罚，才会发现每一个结果都有它自己的逻辑。如果你也喜欢这种「事后诸葛亮」式的分析，<a href="https://main-wdl.com">足球胜平负</a>这个方向里藏着不少值得琢磨的线索。
+    </div>
+
+    <!-- 适合人群 -->
+    <h3 style="font-weight: 600; margin-bottom: 0.4rem; font-size: 1.05rem; color: #2c2722;">👥 适合人群</h3>
+    <div class="audience-row">
+        <div class="audience-item">
+            <h4>📺 日常看球派</h4>
+            <p>周末总要打开电视，看球图个乐，但也想知道为什么有的队总赢，有的队老平。</p>
+        </div>
+        <div class="audience-item">
+            <h4>📊 数据爱好者</h4>
+            <p>不满足于只看比分，还想了解趋势、主客场差异和不同联赛的风格。</p>
+        </div>
+        <div class="audience-item">
+            <h4>🤝 社交型球迷</h4>
+            <p>和同事朋友聊球时，想说出点不一样的东西，而不是只喊「好球」或「可惜」。</p>
+        </div>
+    </div>
+
+    <!-- FAQ 摘要 + 自然链接段落 -->
+    <div class="faq-taste">
+        <details>
+            <summary>胜平负是不是太简单了？能看出什么深度？</summary>
+            <p>简单的东西往往最接近本质。就像一张照片只有三个颜色通道，却能组合出无数画面。胜平负提供了一个稳定的框架，在这个框架里，你可以叠加控球率、射正次数、预期进球等任何维度的信息，而不会迷失。</p>
+        </details>
+        <details>
+            <summary>我刚开始接触，应该从哪入手？</summary>
+            <p>可以从一支喜欢的球队开始，记录他们过去十场主场比赛的胜平负分布。然后试着对比客场数据——这种差异本身就是很好的话题。慢慢你会发现，<a href="https://main-wdl.com">足球胜平负</a> 并不是终点，而是一把钥匙。</p>
+        </details>
+        <details>
+            <summary>这些卡片和提示，能用在日常聊球里吗？</summary>
+            <p>当然。下次朋友说「这场肯定赢」，你可以笑着说「不一定，他们客场平局率挺高的」——就这么简单。足球的魅力，往往就是从这样一句具体的观察开始的。</p>
+        </details>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer-note">
+        页面内容基于足球讨论与信息整理 · 不构成任何建议
+    </div>
+
+</div>
+</body>
+</html>
